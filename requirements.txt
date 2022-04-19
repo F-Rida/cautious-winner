@@ -1,0 +1,14 @@
+do till tuesday
+start window --> 2 buttons start and exit
+project is related to grocery --> theme --> veg/grocery pics in bg
+start takes to categories like
+fruits
+veg
+meat
+pharmacy
+bodycare ...etc
+every category leads to items
+
+items selections append to list.
+
+welcome to xyz hypermart
