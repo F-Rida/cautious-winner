@@ -23,6 +23,7 @@ import matplotlib.pyplot as plt
 import random
 
 #functions:
+#exit from root
 def quit():
     
     answer = askyesno(title='Confirmation',
@@ -285,6 +286,7 @@ name = Label(welcome_page, text="XYZ HYPERMART", fg="red",
                font=("Arial",52,"bold"),
                background="lightgreen",relief="groove")
 name.place(x=330,y=220)
+#start and exit buttons
 start_btn = Button(welcome_page, text="Start", font = ("Arial",12,'bold'), fg="white",command=lambda: categories_page.place(x=50,y=35),height=2,width=10,bg="green", relief=RIDGE,cursor="hand2")
 start_btn.place(x=570,y=350)
 quit_btn = Button(welcome_page, text="Exit", fg="white",command=lambda: quit(),font = ("Arial",12,'bold'),height=2,width=10,bg="green", relief=RIDGE,cursor="hand2")
@@ -308,7 +310,7 @@ exit_btn = Button(categories_page,fg="green",relief="ridge",text="Exit", command
 exit_btn.place(x=20,y=550)
 
 
-
+#defining items for tkinter working
 items = {'Fruits': [['Apple'], ['Banana'], ['Grapes'], ['Guava'], ['Peach'], ['Watermelon']],
            'Oils': [['Coconut Oil'], ['Desi Ghee'], ['Mustard Seed Oil'], ['Olive Oil'], ['Sunflower Seed Oil'], ['Soybean Oil']],
            'Pulses': [['Chickpeas'], ['Daal Arhar'], ['Daal Chana'], ['Daal Kali Masoor'], ['Daal Maash'], ['Daal Mong']],
@@ -317,7 +319,7 @@ items = {'Fruits': [['Apple'], ['Banana'], ['Grapes'], ['Guava'], ['Peach'], ['W
            'Vegetables': [['Bottle Gourd'], ['Coriander'], ['Green Chilli'], ['Lemons'], ['Onions'],[ 'Red Chilli']]}
 
 
-
+# the following code first creates a label for the category then scrollbar beneath the label for the items of the category
 stapless = Label(categories_page,text="FRUITS", foreground="white",background="green",
              borderwidth=2, justify=tk.CENTER,width=21, font=("Times",22,"bold"),
              relief="ridge")
@@ -444,12 +446,13 @@ text['state']='disabled'
 customer_list = []
 ordered_list = []
 output = []
+#save function 
 def submit():
     for i in items.keys():
         for j in items[i]:
-            if j[1].get()==1:
-                customer_list.append(j[0])
-    if len(customer_list)==0:
+            if j[1].get()==1: #if check box is tikced
+                customer_list.append(j[0]) 
+    if len(customer_list)==0: #no ticked checkboxes
         messagebox.showerror("Item Selection","No Items Selected")
     else:
         #Ordered_list calls categorize function to sort customer list with the help of unweighted graph called Stock_G
@@ -458,11 +461,12 @@ def submit():
 
         #calling main call after ordered list to use ordered list as a parameter along with g, the weighted graph
         output = Main_call(ordered_list,g)
-        G=nx.Graph(name="buba")
+        #using networkx to draw the path
+        G=nx.Graph(name="path")
 
         edges = []
         for r in output:
-            route_edges = [(r[n],r[n+1]) for n in range(len(r)-1)]
+            route_edges = [(r[n],r[n+1]) for n in range(len(r)-1)] #r[n] is connected to r[n-1]
             G.add_nodes_from(r)
             G.add_edges_from(route_edges)
             edges.append(route_edges)
@@ -470,13 +474,12 @@ def submit():
 
 
         pos = nx.spring_layout(G)
-        nx.draw_networkx_nodes(G,pos=pos,node_color="lightgreen")
-        nx.draw_networkx_labels(G,pos=pos,verticalalignment='top')
-        colors = ['r', 'b', 'y']
-        linewidths = [20,10,5]
+        nx.draw_networkx_nodes(G,pos=pos,node_color="lightgreen")#Draw the nodes of the graph G.
+        nx.draw_networkx_labels(G,pos=pos,verticalalignment='top')#Draw node labels on the graph G.
+        
         for ctr, edgelist in enumerate(edges):
-            nx.draw_networkx_edges(G,pos=pos,edgelist=edgelist,edge_color = colors[2], width=linewidths[2])
-        plt.savefig('map.png')
+            nx.draw_networkx_edges(G,pos=pos,edgelist=edgelist,edge_color = 'y', width=5)#Draw the edges of the graph G.
+        plt.savefig('map.png')#saving figure in a png file
 
         messagebox.showinfo("PATH", "map.png saved in directory")        
 
@@ -486,3 +489,4 @@ submit_btn.place(x=1130,y=540)
 
 welcome_page.place(x=50, y=35)
 root.mainloop()
+
